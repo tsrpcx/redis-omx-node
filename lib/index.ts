@@ -34,6 +34,9 @@ import Where from "./search/where";
 import WhereField from "./search/where-field";
 import { Circle, CircleFunction } from "./search/where-point";
 
+// reflect extends
+import { MetadataEntity, MetadataHasOne, MetadataPrimary, MetadataProperty } from "./ext/decorators";
+
 
 export {
   Client, SearchDataStructure, RedisHashData, RedisJsonData,
@@ -47,5 +50,8 @@ export {
   PointFieldDefinition, StringFieldDefinition, StringArrayFieldDefinition,
   TextFieldDefinition, SchemaFieldType,
   AbstractSearch, Search, RawSearch, SubSearchFunction,
-  Where, WhereField, Circle, CircleFunction
+  Where, WhereField, Circle, CircleFunction,
+
+  // reflect extends
+  MetadataEntity, MetadataHasOne, MetadataPrimary, MetadataProperty
 };
