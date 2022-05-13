@@ -32,6 +32,10 @@ class EntityObjectField extends EntityField {
     super.valdiateValue(value);
     if (value !== null && !this.isObject(value))
       throw Error(`Expected value with type of 'date' but received '${value}'.`);
+
+    for (let field in this.childFields) {
+      this.recurseChildvaldiateValue(this.childFields[field], value[field]);
+    }
   }
 
   protected convertValue(value: EntityValue): EntityValue {

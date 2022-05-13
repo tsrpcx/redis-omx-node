@@ -9,8 +9,11 @@ abstract class EntityField {
 
   protected fieldDef: FieldDefinition;
 
-  constructor(name: string, fieldDef: FieldDefinition, value?: EntityValue) {
+  protected childFields: Record<string, EntityField> = null;
+
+  constructor(name: string, fieldDef: FieldDefinition, value?: EntityValue, childs?: Record<string, EntityField>) {
     this.fieldDef = fieldDef;
+    this.childFields = childs ?? null;
     this.value = value ?? null;
     this._name = name;
   }
@@ -50,6 +53,17 @@ abstract class EntityField {
 
   protected valdiateValue(value: EntityValue) {
     if (value === undefined) throw Error(`Property cannot be set to undefined. Use null instead.`);
+  }
+
+  protected recurseChildvaldiateValue(item: EntityField, value: EntityValue) {
+    item.value = value;
+    if (item.childFields) {
+      return;
+    }
+
+    for (let field in item.childFields) {
+      this.recurseChildvaldiateValue(item.childFields[field], value[field]);
+    }
   }
 
   protected convertValue(value: EntityValue): EntityValue {

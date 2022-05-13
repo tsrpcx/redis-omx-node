@@ -27,7 +27,19 @@ async function test() {
         }
     })
 
+
+    user.group = {
+        groupName: 'xiaoxueGroup',
+        score: 1000,
+    }
+
+    await User.repository.save(user);
+
     console.log('user=', user.toJSON());
+
+    let dbUser = await User.repository.search().where('id').eq(100010).returnFirst();
+
+    console.log('dbUser=', dbUser.toJSON());
 }
 
 test();

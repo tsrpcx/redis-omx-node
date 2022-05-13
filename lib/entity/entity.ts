@@ -73,16 +73,17 @@ export default abstract class Entity {
         let SActor = meta.hasOneRelations[fieldName].entityType as any;
         let actorInst = new SActor();
         let smeta = Metadata.getEntityMetadataFromType(SActor);
-        const entityField = new ENTITY_FIELD_CONSTRUCTORS['object'](fieldName, fieldDef, fieldValue);
+
+        let childFields = entityFields[fieldAlias] = {} as any;
+        this.createFields(actorInst, smeta.properties, childFields, data[fieldName] as EntityData)
+
+        const entityField = new ENTITY_FIELD_CONSTRUCTORS['object'](fieldName, fieldDef, fieldValue, childFields);
         entityFields[fieldAlias] = entityField;
-        this.createFields(actorInst, smeta.properties, entityFields[fieldAlias] as any, data[fieldName] as EntityData)
         return;
       }
 
       const entityField = new ENTITY_FIELD_CONSTRUCTORS[fieldType](fieldName, fieldDef, fieldValue);
       entityFields[fieldAlias] = entityField;
-
-
     })
   };
 
