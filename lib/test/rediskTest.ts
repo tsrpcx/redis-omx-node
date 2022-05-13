@@ -21,7 +21,10 @@ async function test() {
         name: 'zhangsan',
         age: 100,
         created: new Date(),
-        group: new GroupItem('zs', 89)
+        group: {
+            groupName: 'xiaoxueGroup',
+            score: 100,
+        }
     })
 
     console.log('user=', user.toJSON());

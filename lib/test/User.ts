@@ -1,25 +1,21 @@
 import Entity from "../entity/entity";
 import Repository from "../repository/repository";
 import Schema from "../schema/schema";
-import * as redis from 'redis';
 import Client from "../client";
 import { MetadataEntity, MetadataHasOne, MetadataPrimary, MetadataProperty } from "../ext/decorators";
 
+export interface EGroupItem {
+    groupName: string;
+    score: number;
+}
+
 @MetadataEntity('GroupItem', { isItem: true })
-export class GroupItem {
+export class GroupItem implements EGroupItem {
     @MetadataProperty({ type: 'string', indexed: true })
-    public readonly name: string;
+    groupName: string;
 
     @MetadataProperty({ type: 'number', indexed: true })
-    public readonly score: number;
-
-    constructor(
-        name: string,
-        score: number
-    ) {
-        this.name = name;
-        this.score = score;
-    }
+    score: number;
 }
 
 export interface EUser {
@@ -53,13 +49,7 @@ export class User extends Entity implements EUser {
 
     static get repository() {
         if (!User._repository) {
-            User._repository = (global.clientOM as Client).fetchRepository(new Schema(User, {
-                id: { type: 'number' },
-                name: { type: 'string' },
-                age: { type: 'number' },
-                created: { type: 'date' },
-                group: { type: 'object' },
-            }))
+            User._repository = (global.clientOM as Client).fetchRepository(new Schema(User))
         }
         return User._repository;
     }

@@ -8,6 +8,8 @@ export function MetadataProperty(options: FieldDefinition): Function {
         let mtype: any = 'string';
         if (options.type === 'object') {
             mtype = reflectType.name;
+        } else {
+            mtype = options.type || reflectType.name;
         }
 
         if (MetadataStorage.getGlobal().properties[object.constructor.name] === undefined) {

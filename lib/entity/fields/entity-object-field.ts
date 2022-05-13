@@ -1,28 +1,63 @@
 import EntityField from "./entity-field";
 import EntityValue from "../entity-value";
-import { RedisHashData } from "../../client";
+import { RedisHashData, RedisJsonData } from "../../client";
 
 class EntityObjectField extends EntityField {
+  toRedisJson(): RedisJsonData {
+    const data: RedisJsonData = {};
+    if (this.value !== null) data[this.name] = this.value;
+    return data;
+  }
+
+  fromRedisJson(value: any) {
+    if (this.isNumber(value) || value === null) this.value = value;
+    else throw Error(`Non-numeric value of '${value}' read from Redis for date field.`);
+  }
+
   toRedisHash(): RedisHashData {
     const data: RedisHashData = {};
-    if (this.value !== null) data[this.name] = this.value ? '1' : '0'.toString();
+    if (this.value !== null) data[this.name] = this.valueAsNumber.toString();
     return data;
-  };
+  }
 
   fromRedisHash(value: string) {
-    if (value === '0') {
-      this.value = false;
-    } else if (value === '1') {
-      this.value = true;
-    } else {
-      throw Error(`Non-boolean value of '${value}' read from Redis for boolean field.`);
-    }
+    const parsed = Number.parseFloat(value);
+    if (Number.isNaN(parsed)) throw Error(`Non-numeric value of '${value}' read from Redis for date field.`);
+    const date = new Date();
+    date.setTime(parsed * 1000);
+    this.value = date;
   }
 
   protected valdiateValue(value: EntityValue) {
     super.valdiateValue(value);
     if (value !== null && !this.isObject(value))
-      throw Error(`Expected value with type of 'object' but received '${value}'.`);
+      throw Error(`Expected value with type of 'date' but received '${value}'.`);
+  }
+
+  protected convertValue(value: EntityValue): EntityValue {
+    if (this.isString(value)) {
+      return new Date(value as string);
+    }
+
+    if (this.isNumber(value)) {
+      const newValue = new Date();
+      newValue.setTime(value as number * 1000);
+      return newValue;
+    }
+
+    return super.convertValue(value);
+  }
+
+  private isDateable(value: EntityValue) {
+    return this.isDate(value) || this.isNumber(value) || this.isString(value);
+  }
+
+  private isDate(value: EntityValue) {
+    return value instanceof Date;
+  }
+
+  private get valueAsNumber(): number {
+    return (this.value as Date).getTime() / 1000;
   }
 }
 

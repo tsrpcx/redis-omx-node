@@ -60,7 +60,7 @@ export default class Schema<TEntity extends Entity> {
    * @param schemaDef Defines all of the fields for the Schema and how they are mapped to Redis.
    * @param options Additional options for this Schema.
    */
-  constructor(ctor: EntityConstructor<TEntity>, schemaDef: SchemaDefinition, options?: SchemaOptions) {
+  constructor(ctor: EntityConstructor<TEntity>, options?: SchemaOptions) {
     this.entityCtor = ctor;
     let meta = Metadata.getEntityMetadataFromType(ctor);
     this.definition = meta.properties;
@@ -138,12 +138,12 @@ export default class Schema<TEntity extends Entity> {
 
       if (meta.hasOneRelations && meta.hasOneRelations[fieldName]) {
         let sActor = meta.hasOneRelations[fieldName].entityType as unknown as EntityConstructor<TEntity>;
-        let smeta = Metadata.getEntityMetadataFromType(sActor);
-        this.defineProperties(sActor, smeta.properties)
-        return;
+        let sMeta = Metadata.getEntityMetadataFromType(sActor);
+        this.defineProperties(sActor, sMeta.properties)
+      } else {
+        // 校验字段是否有效
+        this.validateFieldDef(fieldName, fieldDef);
       }
-
-      this.validateFieldDef(fieldName, fieldDef);
 
       const fieldAlias = fieldDef.alias ?? fieldName;
 

@@ -15,6 +15,8 @@ import FieldDefinition from "../schema/definition/field-definition";
 import SchemaFieldType from "../schema/definition/schema-field-type";
 import { RedisJsonData, RedisHashData } from "../client";
 import EntityObjectField from "./fields/entity-object-field";
+import { Metadata } from "../ext/metadata";
+import EntityConstructor from "./entity-constructor";
 
 const ENTITY_FIELD_CONSTRUCTORS: Record<SchemaFieldType, EntityFieldConstructor> = {
   'object': EntityObjectField,
@@ -51,22 +53,36 @@ export default abstract class Entity {
     this.schemaDef = schema.definition;
     this.prefix = schema.prefix;
     this.entityId = id;
-    this.createFields(data);
+    this.createFields(this, this.schemaDef, this.entityFields, data);
   }
 
   /**
    * Create the fields on the Entity.
    * @internal
    */
-  private createFields(data: EntityData) {
-    Object.keys(this.schemaDef).forEach(fieldName => {
-      const fieldDef: FieldDefinition = this.schemaDef[fieldName];
+  private createFields(entityInst: any, schemaDef: SchemaDefinition, entityFields: Record<string, EntityField>, data: EntityData) {
+    let meta = Metadata.getEntityMetadataFromInstance(entityInst);
+
+    Object.keys(schemaDef).forEach(fieldName => {
+      const fieldDef: FieldDefinition = schemaDef[fieldName];
       const fieldType = fieldDef.type;
       const fieldAlias = fieldDef.alias ?? fieldName;
       const fieldValue = data[fieldAlias] ?? null;
 
+      if (meta.hasOneRelations && meta.hasOneRelations[fieldName]) {
+        let SActor = meta.hasOneRelations[fieldName].entityType as any;
+        let actorInst = new SActor();
+        let smeta = Metadata.getEntityMetadataFromType(SActor);
+        const entityField = new ENTITY_FIELD_CONSTRUCTORS['object'](fieldName, fieldDef, fieldValue);
+        entityFields[fieldAlias] = entityField;
+        this.createFields(actorInst, smeta.properties, entityFields[fieldAlias] as any, data[fieldName] as EntityData)
+        return;
+      }
+
       const entityField = new ENTITY_FIELD_CONSTRUCTORS[fieldType](fieldName, fieldDef, fieldValue);
-      this.entityFields[fieldAlias] = entityField;
+      entityFields[fieldAlias] = entityField;
+
+
     })
   };
 
