@@ -53,15 +53,15 @@ export default abstract class Entity {
     this.schemaDef = schema.definition;
     this.prefix = schema.prefix;
     this.entityId = id;
-    this.createFields(this, this.schemaDef, this.entityFields, data);
+    this.createFields(schema.entityCtor.name, this.schemaDef, this.entityFields, data);
   }
 
   /**
    * Create the fields on the Entity.
    * @internal
    */
-  private createFields(entityInst: any, schemaDef: SchemaDefinition, entityFields: Record<string, EntityField>, data: EntityData) {
-    let meta = Metadata.getEntityMetadataFromInstance(entityInst);
+  private createFields(entityName: any, schemaDef: SchemaDefinition, entityFields: Record<string, EntityField>, data: EntityData) {
+    let meta = Metadata.getEntityMetadataFromName(entityName);
 
     Object.keys(schemaDef).forEach(fieldName => {
       const fieldDef: FieldDefinition = schemaDef[fieldName];
@@ -71,11 +71,10 @@ export default abstract class Entity {
 
       if (meta.hasOneRelations && meta.hasOneRelations[fieldName]) {
         let SActor = meta.hasOneRelations[fieldName].entityType as any;
-        let actorInst = new SActor();
         let smeta = Metadata.getEntityMetadataFromType(SActor);
 
         let childFields = entityFields[fieldAlias] = {} as any;
-        this.createFields(actorInst, smeta.properties, childFields, data[fieldName] as EntityData)
+        this.createFields(SActor.name, smeta.properties, childFields, data[fieldName] as EntityData)
 
         const entityField = new ENTITY_FIELD_CONSTRUCTORS['object'](fieldName, fieldDef, fieldValue, childFields);
         entityFields[fieldAlias] = entityField;
@@ -126,6 +125,10 @@ export default abstract class Entity {
   fromRedisJson(data: RedisJsonData) {
     if (!data) return data;
     Object.keys(data).forEach(field => {
+      if (!this.entityFields[field]) {
+        // TODO YNG 字段定义已经删除，无需处理该字段，是否应该通过自动控制获取哪些字段
+        return;
+      }
       this.entityFields[field].fromRedisJson(data[field]);
     })
   }

@@ -42,6 +42,9 @@ export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBui
       case 'text':
         fieldDetails = this.buildSortableText(fieldDef as SortableFieldDefinition)
         break;
+      default:
+        fieldDetails = this.buildTag();
+        break;
     }
 
     return [fieldPath, 'AS', fieldAlias, ...fieldDetails];

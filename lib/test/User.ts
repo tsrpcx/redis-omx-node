@@ -23,7 +23,8 @@ export interface EUser {
     name: string;
     age: number;
     created: Date;
-    group: GroupItem;
+    dbs: string[];
+    // group: GroupItem;
 }
 
 @MetadataEntity('User')
@@ -41,9 +42,12 @@ export class User extends Entity implements EUser {
     @MetadataProperty({ type: 'date', indexed: false })
     created: Date;
 
-    @MetadataHasOne(GroupItem)
-    @MetadataProperty({ type: 'object', indexed: false })
-    group: GroupItem;
+    @MetadataProperty({ type: 'string[]', indexed: false })
+    dbs: string[];
+
+    // @MetadataHasOne(GroupItem)
+    // @MetadataProperty({ type: 'object', indexed: false })
+    // group: GroupItem;
 
     private static _repository: Repository<User>;
 
