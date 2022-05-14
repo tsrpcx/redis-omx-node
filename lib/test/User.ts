@@ -2,7 +2,7 @@ import Entity from "../entity/entity";
 import Repository from "../repository/repository";
 import Schema from "../schema/schema";
 import Client from "../client";
-import { MetadataEntity, MetadataHasOne, MetadataPrimary, MetadataProperty } from "../ext/decorators";
+import { MetadataEntity, MetadataPrimary, MetadataProperty } from "../ext/decorators";
 
 export interface EGroupItem {
     groupName: string;
@@ -24,7 +24,7 @@ export interface EUser {
     age: number;
     created: Date;
     dbs: string[];
-    // group: GroupItem;
+    group: GroupItem;
 }
 
 @MetadataEntity('User')
@@ -42,15 +42,11 @@ export class User extends Entity implements EUser {
     @MetadataProperty({ type: 'date', indexed: false })
     created: Date;
 
-    // @MetadataProperty({ type: 'boolean', indexed: false })
-    // ok: boolean;
-
     @MetadataProperty({ type: 'string[]', indexed: false })
     dbs: string[];
 
-    // @MetadataHasOne(GroupItem)
-    // @MetadataProperty({ type: 'object', indexed: false })
-    // group: GroupItem;
+    @MetadataProperty({ type: 'object' })
+    group: GroupItem;
 
     private static _repository: Repository<User>;
 

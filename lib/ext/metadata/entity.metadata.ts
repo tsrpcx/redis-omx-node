@@ -7,5 +7,4 @@ export interface EntityMetadata {
     uniques: string[];
     properties: SchemaDefinition;
     isItems: boolean;
-    hasOneRelations: {[key: string]: HasOneOptions };
 }

@@ -20,6 +20,11 @@ interface BaseFieldDefinition {
    * Is create index
    */
   indexed?: boolean;
+
+  /**
+   * child node object.
+   */
+  childType?: any;
 }
 
 export default BaseFieldDefinition;

@@ -69,8 +69,8 @@ export default abstract class Entity {
       const fieldAlias = fieldDef.alias ?? fieldName;
       const fieldValue = data[fieldAlias] ?? null;
 
-      if (meta.hasOneRelations && meta.hasOneRelations[fieldName]) {
-        let SActor = meta.hasOneRelations[fieldName].entityType as any;
+      if (fieldDef.childType) {
+        let SActor = fieldDef.childType as any;
         let smeta = Metadata.getEntityMetadataFromType(SActor);
 
         let childFields = entityFields[fieldAlias] = {} as any;

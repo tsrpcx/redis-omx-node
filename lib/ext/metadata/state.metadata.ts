@@ -9,5 +9,4 @@ export interface StateMetadata {
     uniques: { [key: string]: string[]; };
     properties: { [key: string]: SchemaDefinition };
     primary: { [key: string]: string; };
-    hasOneRelations: { [key: string]: { [key: string]: HasOneOptions } }
 }

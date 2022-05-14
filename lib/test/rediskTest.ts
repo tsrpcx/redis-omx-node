@@ -17,20 +17,22 @@ async function test() {
         age: 100,
         created: new Date(),
         dbs: ["redis", "json", "redisjson"],
-        // group: {
-        //     groupName: 'xiaoxueGroup',
-        //     score: 100,
-        // }
+        group: {
+            groupName: 'xiaoxueGroup',
+            score: 100,
+        }
     })
 
-    // user.group = {
-    //     groupName: 'xiaoxueGroup',
-    //     score: 1000,
-    // }
+    user.group = {
+        groupName: 'xiaoxueGroup',
+        score: 'afsdf' as any,
+    }
 
     await User.repository.save(user);
 
     console.log('user=', user.toJSON());
+
+    return;
 
     let dbUsers = await User.repository.search().where('id').eq(100010).returnAll();
     dbUsers.forEach(async (item) => {

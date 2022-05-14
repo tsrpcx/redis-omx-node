@@ -136,8 +136,8 @@ export default class Schema<TEntity extends Entity> {
 
       const fieldDef: FieldDefinition = definition[fieldName];
 
-      if (meta.hasOneRelations && meta.hasOneRelations[fieldName]) {
-        let sActor = meta.hasOneRelations[fieldName].entityType as unknown as EntityConstructor<TEntity>;
+      if (fieldDef.childType) {
+        let sActor = fieldDef.childType as unknown as EntityConstructor<TEntity>;
         let sMeta = Metadata.getEntityMetadataFromType(sActor);
         this.defineProperties(sActor, sMeta.properties)
       } else {

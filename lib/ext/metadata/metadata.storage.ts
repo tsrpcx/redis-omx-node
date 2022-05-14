@@ -7,8 +7,7 @@ export class MetadataStorage {
         isItems: {},
         uniques: {},
         properties: {},
-        primary: {},
-        hasOneRelations: {},
+        primary: {}
     };
 
     static getGlobal(): StateMetadata {

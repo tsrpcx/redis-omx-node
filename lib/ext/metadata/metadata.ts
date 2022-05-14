@@ -17,7 +17,7 @@ export class Metadata {
     }
 
     private static getEntityMetadata<T>(entityName: string): EntityMetadata {
-        const { names, primary, properties, isItems, uniques, hasOneRelations } = MetadataStorage.getGlobal();
+        const { names, primary, properties, isItems, uniques } = MetadataStorage.getGlobal();
 
         if (names[entityName] === undefined) {
             throw new Error(entityName + ' is not an entity!');
@@ -32,8 +32,7 @@ export class Metadata {
             primary: primary[entityName],
             uniques: uniques[entityName],
             properties: properties[entityName],
-            isItems: isItems[entityName],
-            hasOneRelations: hasOneRelations[entityName],
+            isItems: isItems[entityName]
         };
     }
 

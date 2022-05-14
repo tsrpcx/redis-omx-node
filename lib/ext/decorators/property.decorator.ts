@@ -21,6 +21,7 @@ export function MetadataProperty(options: FieldDefinition): Function {
             indexed: options.indexed,
             type: mtype,
             defaultValue: options.defaultValue,
+            childType: options.type === 'object' ? reflectType : null
         };
     };
 }
