@@ -42,12 +42,15 @@ export class User extends Entity implements EUser {
     @MetadataProperty({ type: 'date', indexed: false })
     created: Date;
 
+    @MetadataProperty({ type: 'boolean', indexed: false })
+    ok: boolean;
+
     @MetadataProperty({ type: 'string[]', indexed: false })
     dbs: string[];
 
-    // @MetadataHasOne(GroupItem)
-    // @MetadataProperty({ type: 'object', indexed: false })
-    // group: GroupItem;
+    @MetadataHasOne(GroupItem)
+    @MetadataProperty({ type: 'object', indexed: false })
+    group: GroupItem;
 
     private static _repository: Repository<User>;
 
