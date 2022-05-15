@@ -12,7 +12,7 @@ async function test() {
     await User.repository.createIndex();
 
     let user = await User.create({
-        id: 100010,
+        id: 100011,
         name: 'zhangsan',
         age: 100,
         created: new Date(),
@@ -23,24 +23,24 @@ async function test() {
         }
     })
 
-    user.group = {
-        groupName: 'xiaoxueGroup',
-        score: 'afsdf' as any,
-    }
+    // user.group = {
+    //     groupName: 'xiaoxueGroup',
+    //     score: 'aa' as any,
+    // }
 
     await User.repository.save(user);
 
     console.log('user=', user.toJSON());
 
-    return;
+    // return;
 
-    let dbUsers = await User.repository.search().where('id').eq(100010).returnAll();
+    let dbUsers = await User.repository.search().where('id').eq(100011).returnAll();
     dbUsers.forEach(async (item) => {
         console.log('dbUser=', item.toJSON())
         item.age = Math.random() * 1000000;
         await User.repository.save(item);
     })
-    // console.log('dbUser=', dbUser.toJSON());
+    console.log('dbUser=', dbUsers);
 }
 
 test();

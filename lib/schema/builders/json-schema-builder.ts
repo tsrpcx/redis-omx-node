@@ -16,6 +16,10 @@ export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBui
     const fieldPath = `\$.${fieldAlias}${fieldType === 'string[]' ? '[*]' : ''}`;
     let fieldDetails: Array<string>;
 
+    if (!fieldDef.indexed) {
+      return [];
+    }
+
     switch (fieldType) {
       case 'date':
         fieldDetails = this.buildSortableNumeric(fieldDef as SortableFieldDefinition);
@@ -42,8 +46,11 @@ export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBui
       case 'text':
         fieldDetails = this.buildSortableText(fieldDef as SortableFieldDefinition)
         break;
-      default:
+      case 'object':
         fieldDetails = this.buildTag();
+        break;
+      default:
+
         break;
     }
 

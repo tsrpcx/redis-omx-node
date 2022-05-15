@@ -74,7 +74,7 @@ export default abstract class Entity {
         let smeta = Metadata.getEntityMetadataFromType(SActor);
 
         let childFields = entityFields[fieldAlias] = {} as any;
-        this.createFields(SActor.name, smeta.properties, childFields, data[fieldName] as EntityData)
+        this.createFields(SActor.name, smeta.properties, childFields, data[fieldName] as EntityData ?? {})
 
         const entityField = new ENTITY_FIELD_CONSTRUCTORS['object'](fieldName, fieldDef, fieldValue, childFields);
         entityFields[fieldAlias] = entityField;

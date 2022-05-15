@@ -11,10 +11,10 @@ export interface EGroupItem {
 
 @MetadataEntity('GroupItem', { isItem: true })
 export class GroupItem implements EGroupItem {
-    @MetadataProperty({ type: 'string', indexed: true })
+    @MetadataProperty({ type: 'string' })
     groupName: string;
 
-    @MetadataProperty({ type: 'number', indexed: true })
+    @MetadataProperty({ type: 'number' })
     score: number;
 }
 
@@ -33,16 +33,16 @@ export class User extends Entity implements EUser {
     @MetadataPrimary()
     @MetadataProperty({ type: 'number', indexed: true })
     id: number;
-    @MetadataProperty({ type: 'string', indexed: true, sortable: false })
+    @MetadataProperty({ type: 'string' })
     name: string;
 
     @MetadataProperty({ type: 'number', defaultValue: 100 })
     age: number;
 
-    @MetadataProperty({ type: 'date', indexed: false })
+    @MetadataProperty({ type: 'date' })
     created: Date;
 
-    @MetadataProperty({ type: 'string[]', indexed: false })
+    @MetadataProperty({ type: 'string[]' })
     dbs: string[];
 
     @MetadataProperty({ type: 'object' })

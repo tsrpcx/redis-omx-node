@@ -10,8 +10,8 @@ class EntityObjectField extends EntityField {
   }
 
   fromRedisJson(value: any) {
-    if (this.isNumber(value) || value === null) this.value = value;
-    else throw Error(`Non-numeric value of '${value}' read from Redis for date field.`);
+    if (this.isObject(value) || value === null) this.value = value;
+    else throw Error(`Non-object value of '${value}' read from Redis for date field.`);
   }
 
   toRedisHash(): RedisHashData {
@@ -34,7 +34,7 @@ class EntityObjectField extends EntityField {
       throw Error(`Expected value with type of 'date' but received '${value}'.`);
 
     for (let field in this.childFields) {
-      this.recurseChildvaldiateValue(this.childFields[field], value[field]);
+      this.recurseChildvaldiateValue(this.childFields[field], value ? value[field] : null);
     }
   }
 
