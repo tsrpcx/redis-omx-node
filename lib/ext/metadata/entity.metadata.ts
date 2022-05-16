@@ -1,4 +1,3 @@
-import { HasOneOptions } from '../interfaces';
 import SchemaDefinition from '../../schema/definition/schema-definition';
 
 export interface EntityMetadata {
