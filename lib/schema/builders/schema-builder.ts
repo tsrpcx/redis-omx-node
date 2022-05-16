@@ -17,10 +17,6 @@ export default abstract class SchemaBuilder<TEntity extends Entity> {
   get redisSchema(): Array<string> {
     const redisSchema: Array<string> = [];
     this.genRedisSchema(redisSchema, this.schema.definition);
-
-    Object.keys(this.schema.definition).forEach(field => {
-      redisSchema.push(...this.buildEntry(field, ''));
-    })
     return redisSchema;
   }
 
@@ -33,12 +29,13 @@ export default abstract class SchemaBuilder<TEntity extends Entity> {
         let smeta = Metadata.getEntityMetadataFromType(SActor);
         jsonpath += `${field}.`
         this.genRedisSchema(redisSchema, smeta.properties, jsonpath)
+        return;
       }
-      redisSchema.push(...this.buildEntry(field, jsonpath));
+      redisSchema.push(...this.buildEntry(field, definition, jsonpath));
     })
   }
 
-  protected abstract buildEntry(field: string, jsonpath: string): Array<string>;
+  protected abstract buildEntry(field: string, definition: SchemaDefinition, jsonpath: string): Array<string>;
 
   protected buildSortableNumeric(fieldDef: SortableFieldDefinition): Array<string> {
     return this.buildSortableField('NUMERIC', fieldDef.sortable);

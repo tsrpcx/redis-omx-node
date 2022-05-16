@@ -6,14 +6,15 @@ import SortableFieldDefinition from "../definition/sortable-field-definition";
 import SchemaFieldType from "../definition/schema-field-type";
 
 import * as logger from '../../shims/logger'
+import SchemaDefinition from "../definition/schema-definition";
 
 export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBuilder<TEntity> {
 
-  protected buildEntry(field: string, jsonpath: string): Array<string> {
-    const fieldDef: FieldDefinition = this.schema.definition[field];
+  protected buildEntry(field: string, definition: SchemaDefinition, jsonpath: string): Array<string> {
+    const fieldDef: FieldDefinition = definition[field];
     const fieldType: SchemaFieldType = fieldDef.type;
-    const fieldAlias = fieldDef.alias ?? field;
-    const fieldPath = `\$.${jsonpath !== '' ? jsonpath + fieldAlias : fieldAlias}${fieldType === 'string[]' ? '[*]' : ''} `;
+    const fieldAlias = jsonpath !== '' ? jsonpath + (fieldDef.alias ?? field) : (fieldDef.alias ?? field);
+    const fieldPath = `\$.${fieldAlias}${fieldType === 'string[]' ? '[*]' : ''}`;
     let fieldDetails: Array<string>;
 
     if (!fieldDef.indexed) {
@@ -47,7 +48,6 @@ export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBui
         fieldDetails = this.buildSortableText(fieldDef as SortableFieldDefinition)
         break;
       default:
-
         break;
     }
 

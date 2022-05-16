@@ -12,13 +12,13 @@ async function test() {
     await User.repository.createIndex();
 
     let user = await User.create({
-        id: 100011,
+        id: 100012,
         name: 'zhangsan',
         age: 100,
         created: new Date(),
         dbs: ["redis", "json", "redisjson"],
         group: {
-            groupName: 'xiaoxueGroup',
+            name: 'g11',
             score: 100,
         }
     })
@@ -32,13 +32,16 @@ async function test() {
 
     console.log('user=', user.toJSON());
 
+
     // return;
 
-    let dbUsers = await User.repository.search().where('id').eq(100011).returnAll();
+    // let dbUsers = await User.repository.search().where('id').eq(100011).returnAll();
     // let dbUsers = await User.repository.search().where('group.groupName').eq('xiaoxueGroup').returnAll();
     // finds all the Mushroomhead albums with the word 'beautiful' in the title from 1990 and beyond
-    // const query = "@name:zhangsan"
-    // let dbUsers = await User.repository.searchRaw(query).returnAll();
+
+    // text=>()  string=>{}
+    const query = "@group\\.name:{g11}"
+    let dbUsers = await User.repository.searchRaw(query).returnAll();
     dbUsers.forEach(async (item) => {
         console.log('dbUser=', item.toJSON())
         item.age = Math.random() * 1000000;

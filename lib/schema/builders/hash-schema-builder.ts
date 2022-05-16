@@ -4,10 +4,11 @@ import FieldDefinition from "../definition/field-definition";
 import SeparableFieldDefinition from "../definition/separable-field-definition";
 import SortableFieldDefinition from "../definition/sortable-field-definition";
 import SchemaFieldType from "../definition/schema-field-type";
+import SchemaDefinition from "../definition/schema-definition";
 
 export default class HashSchemaBuilder<TEntity extends Entity> extends SchemaBuilder<TEntity> {
 
-  protected buildEntry(field: string, jsonpath: string): Array<string> {
+  protected buildEntry(field: string, definition: SchemaDefinition, jsonpath: string): Array<string> {
     const fieldDef: FieldDefinition = this.schema.definition[field];
     const fieldType: SchemaFieldType = fieldDef.type;
     const fieldAlias = fieldDef.alias ?? field

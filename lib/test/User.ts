@@ -5,16 +5,16 @@ import Client from "../client";
 import { MetadataEntity, MetadataPrimary, MetadataProperty } from "../ext/decorators";
 
 export interface EGroupItem {
-    groupName: string;
+    name: string;
     score: number;
 }
 
 @MetadataEntity('GroupItem', { isItem: true })
 export class GroupItem implements EGroupItem {
-    @MetadataProperty({ type: 'string' })
-    groupName: string;
+    @MetadataProperty({ type: 'string', indexed: true })
+    name: string;
 
-    @MetadataProperty({ type: 'number' })
+    @MetadataProperty({ type: 'number', indexed: true })
     score: number;
 }
 
@@ -33,7 +33,7 @@ export class User extends Entity implements EUser {
     @MetadataPrimary()
     @MetadataProperty({ type: 'number', indexed: true })
     id: number;
-    @MetadataProperty({ type: 'string', indexed: true })
+    @MetadataProperty({ type: 'text', indexed: true })
     name: string;
 
     @MetadataProperty({ type: 'number', defaultValue: 100 })
@@ -45,7 +45,7 @@ export class User extends Entity implements EUser {
     @MetadataProperty({ type: 'string[]' })
     dbs: string[];
 
-    @MetadataProperty({ type: 'object', indexed: true })
+    @MetadataProperty({ type: 'object' })
     group: GroupItem;
 
     private static _repository: Repository<User>;
