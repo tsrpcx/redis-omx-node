@@ -7,7 +7,7 @@ import SchemaFieldType from "../definition/schema-field-type";
 
 export default class HashSchemaBuilder<TEntity extends Entity> extends SchemaBuilder<TEntity> {
 
-  protected buildEntry(field: string): Array<string> {
+  protected buildEntry(field: string, jsonpath: string): Array<string> {
     const fieldDef: FieldDefinition = this.schema.definition[field];
     const fieldType: SchemaFieldType = fieldDef.type;
     const fieldAlias = fieldDef.alias ?? field

@@ -61,8 +61,6 @@ export default abstract class Entity {
    * @internal
    */
   private createFields(entityName: any, schemaDef: SchemaDefinition, entityFields: Record<string, EntityField>, data: EntityData) {
-    let meta = Metadata.getEntityMetadataFromName(entityName);
-
     Object.keys(schemaDef).forEach(fieldName => {
       const fieldDef: FieldDefinition = schemaDef[fieldName];
       const fieldType = fieldDef.type;

@@ -9,11 +9,11 @@ import * as logger from '../../shims/logger'
 
 export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBuilder<TEntity> {
 
-  protected buildEntry(field: string): Array<string> {
+  protected buildEntry(field: string, jsonpath: string): Array<string> {
     const fieldDef: FieldDefinition = this.schema.definition[field];
     const fieldType: SchemaFieldType = fieldDef.type;
     const fieldAlias = fieldDef.alias ?? field;
-    const fieldPath = `\$.${fieldAlias}${fieldType === 'string[]' ? '[*]' : ''}`;
+    const fieldPath = `\$.${jsonpath !== '' ? jsonpath + fieldAlias : fieldAlias}${fieldType === 'string[]' ? '[*]' : ''} `;
     let fieldDetails: Array<string>;
 
     if (!fieldDef.indexed) {
@@ -45,9 +45,6 @@ export default class JsonSchemaBuilder<TEntity extends Entity> extends SchemaBui
         break;
       case 'text':
         fieldDetails = this.buildSortableText(fieldDef as SortableFieldDefinition)
-        break;
-      case 'object':
-        fieldDetails = this.buildTag();
         break;
       default:
 

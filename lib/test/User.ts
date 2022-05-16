@@ -33,7 +33,7 @@ export class User extends Entity implements EUser {
     @MetadataPrimary()
     @MetadataProperty({ type: 'number', indexed: true })
     id: number;
-    @MetadataProperty({ type: 'string' })
+    @MetadataProperty({ type: 'string', indexed: true })
     name: string;
 
     @MetadataProperty({ type: 'number', defaultValue: 100 })
@@ -45,7 +45,7 @@ export class User extends Entity implements EUser {
     @MetadataProperty({ type: 'string[]' })
     dbs: string[];
 
-    @MetadataProperty({ type: 'object' })
+    @MetadataProperty({ type: 'object', indexed: true })
     group: GroupItem;
 
     private static _repository: Repository<User>;

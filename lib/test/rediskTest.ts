@@ -35,6 +35,10 @@ async function test() {
     // return;
 
     let dbUsers = await User.repository.search().where('id').eq(100011).returnAll();
+    // let dbUsers = await User.repository.search().where('group.groupName').eq('xiaoxueGroup').returnAll();
+    // finds all the Mushroomhead albums with the word 'beautiful' in the title from 1990 and beyond
+    // const query = "@name:zhangsan"
+    // let dbUsers = await User.repository.searchRaw(query).returnAll();
     dbUsers.forEach(async (item) => {
         console.log('dbUser=', item.toJSON())
         item.age = Math.random() * 1000000;
