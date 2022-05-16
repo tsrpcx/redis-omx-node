@@ -1,7 +1,6 @@
 import { MetadataStorage } from '../metadata/metadata.storage';
 import 'reflect-metadata';
 import FieldDefinition from '../../schema/definition/field-definition';
-import SchemaFieldType from '../../schema/definition/schema-field-type';
 
 export function MetadataProperty(options: FieldDefinition): Function {
     return (object: object, propertyName: string) => {
@@ -18,7 +17,7 @@ export function MetadataProperty(options: FieldDefinition): Function {
         }
         MetadataStorage.getGlobal().properties[object.constructor.name][propertyName] = {
             name: propertyName,
-            indexed: options.indexed,
+            indexed: options.indexed ?? true,
             type: options.type,
             defaultValue: options.defaultValue,
             childType: options.type === 'object' ? reflectType : null

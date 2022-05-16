@@ -30,10 +30,11 @@ async function test() {
 
     await User.repository.save(user);
 
-    console.log('user=', user.toJSON());
+    let a =true;
+    console.log('user=', a ?? 100, user.toJSON());
 
 
-    // return;
+    return;
 
     let dbUsers = await User.repository.search().where('group\\.name').eq('g11').returnAll();
     // let dbUsers = await User.repository.search().where('group.groupName').eq('xiaoxueGroup').returnAll();
