@@ -19,6 +19,7 @@ import { RedisError } from "..";
 import { SortOptions } from "../client";
 import WhereDate from "./where-date";
 import SortableFieldDefinition from "../schema/definition/sortable-field-definition";
+import { Metadata } from "../ext/metadata";
 
 /**
  * A function that takes a {@link Search} and returns a {@link Search}. Used in nested queries.
@@ -404,7 +405,18 @@ export class Search<TEntity extends Entity> extends AbstractSearch<TEntity> {
   }
 
   private createWhere(field: string): WhereField<TEntity> {
-    const fieldDef = this.schema.definition[field];
+    let fieldDef = this.schema.definition[field];
+
+    if (fieldDef === undefined) {
+      let fields = field.split('\\.');
+      if (fields.length > 1) {
+        fieldDef = this.schema.definition[fields[0]];
+        for (let i = 1; i < fields.length; i++) {
+          let meta = Metadata.getEntityMetadataFromType(fieldDef.childType as any);
+          fieldDef = meta.properties[fields[i]];
+        }
+      }
+    }
 
     if (fieldDef === undefined) throw new Error(`The field '${field}' is not part of the schema.`);
 

@@ -25,10 +25,9 @@ export default abstract class SchemaBuilder<TEntity extends Entity> {
     Object.keys(definition).forEach(field => {
       const fieldDef: FieldDefinition = definition[field];
       if (fieldDef.childType) {
-        let SActor = fieldDef.childType as any;
-        let smeta = Metadata.getEntityMetadataFromType(SActor);
+        let meta = Metadata.getEntityMetadataFromType(fieldDef.childType as any);
         jsonpath += `${field}.`
-        this.genRedisSchema(redisSchema, smeta.properties, jsonpath)
+        this.genRedisSchema(redisSchema, meta.properties, jsonpath)
         return;
       }
       redisSchema.push(...this.buildEntry(field, definition, jsonpath));

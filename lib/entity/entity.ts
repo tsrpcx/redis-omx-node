@@ -53,14 +53,14 @@ export default abstract class Entity {
     this.schemaDef = schema.definition;
     this.prefix = schema.prefix;
     this.entityId = id;
-    this.createFields(schema.entityCtor.name, this.schemaDef, this.entityFields, data);
+    this.createFields(this.schemaDef, this.entityFields, data);
   }
 
   /**
    * Create the fields on the Entity.
    * @internal
    */
-  private createFields(entityName: any, schemaDef: SchemaDefinition, entityFields: Record<string, EntityField>, data: EntityData) {
+  private createFields(schemaDef: SchemaDefinition, entityFields: Record<string, EntityField>, data: EntityData) {
     Object.keys(schemaDef).forEach(fieldName => {
       const fieldDef: FieldDefinition = schemaDef[fieldName];
       const fieldType = fieldDef.type;
@@ -68,11 +68,9 @@ export default abstract class Entity {
       const fieldValue = data[fieldAlias] ?? null;
 
       if (fieldDef.childType) {
-        let SActor = fieldDef.childType as any;
-        let smeta = Metadata.getEntityMetadataFromType(SActor);
-
+        let meta = Metadata.getEntityMetadataFromType(fieldDef.childType as any);
         let childFields = entityFields[fieldAlias] = {} as any;
-        this.createFields(SActor.name, smeta.properties, childFields, data[fieldName] as EntityData ?? {})
+        this.createFields(meta.properties, childFields, data[fieldName] as EntityData ?? {})
 
         const entityField = new ENTITY_FIELD_CONSTRUCTORS['object'](fieldName, fieldDef, fieldValue, childFields);
         entityFields[fieldAlias] = entityField;
