@@ -107,7 +107,7 @@ export default abstract class Repository<TEntity extends Entity> {
    */
   createEntity(data: EntityData = {}, id?: number | string): TEntity {
     id = id ?? this.schema.generateId();
-    return new this.schema.entityCtor(this.schema, id, data);
+    return new this.schema.entityCtor(this.schema, id.toString(), data);
   }
 
   /**

@@ -41,7 +41,7 @@ const ENTITY_FIELD_CONSTRUCTORS: Record<SchemaFieldType, EntityFieldConstructor>
  */
 export default abstract class Entity {
   /** The generated entity ID. */
-  readonly entityId: string | number;
+  readonly entityId: string;
 
   private schemaDef: SchemaDefinition;
   private prefix: string;
@@ -51,7 +51,7 @@ export default abstract class Entity {
    * Creates an new Entity.
    * @internal
    */
-  constructor(schema: Schema<any>, id: string | number, data: EntityData = {}) {
+  constructor(schema: Schema<any>, id: string, data: EntityData = {}) {
     this.schemaDef = schema.definition;
     this.prefix = schema.prefix;
     this.entityId = id;

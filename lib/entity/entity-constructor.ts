@@ -7,7 +7,7 @@ import EntityData from "./entity-data";
  */
 type EntityConstructor<TEntity> = new (
   schema: Schema<any>,
-  id: string | number,
+  id: string,
   data?: EntityData) => TEntity;
 
 export default EntityConstructor;
