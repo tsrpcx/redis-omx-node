@@ -2,14 +2,14 @@ import Entity from "../entity/entity";
 import Repository from "../repository/repository";
 import Schema from "../schema/schema";
 import Client from "../client";
-import { EntityOmx, Primary, Property } from "../ext/decorators";
+import { OrmClass, Primary, Property } from "../ext/decorators";
 
 export interface EGroupItem {
     name: string;
     score: number;
 }
 
-@EntityOmx('GroupItem', { isItem: true })
+@OrmClass('GroupItem', { isItem: true })
 export class GroupItem implements EGroupItem {
     @Property({ type: 'string', indexed: true })
     name: string;
@@ -27,7 +27,7 @@ export interface EUser {
     group: GroupItem;
 }
 
-@EntityOmx('User')
+@OrmClass('User')
 export class User extends Entity implements EUser {
     /** 用户uid */
     @Primary()

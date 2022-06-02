@@ -35,7 +35,7 @@ import WhereField from "./search/where-field";
 import { Circle, CircleFunction } from "./search/where-point";
 
 // reflect extends
-import { EntityOmx, Primary, Property } from "./ext/decorators";
+import { OrmClass, Primary, Property } from "./ext/decorators";
 
 
 export {
@@ -53,5 +53,5 @@ export {
   Where, WhereField, Circle, CircleFunction,
 
   // reflect extends
-  EntityOmx, Primary, Property
+  OrmClass, Primary, Property
 };
