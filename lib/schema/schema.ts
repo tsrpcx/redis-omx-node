@@ -125,9 +125,9 @@ export default class Schema<TEntity extends Entity> {
    * Generates a unique string using the configured {@link IdStrategy}.
    * @returns
    */
-  async generateId(): Promise<string> {
-    const ulidStrategy: IdStrategy = async () => ulid();
-    return (await (this.options?.idStrategy ?? ulidStrategy)()).toString();
+  generateId(): string {
+    const ulidStrategy: IdStrategy = () => ulid();
+    return (this.options?.idStrategy ?? ulidStrategy)();
   }
 
   private defineProperties(actor: EntityConstructor<TEntity>, definition: SchemaDefinition) {
@@ -173,7 +173,7 @@ export default class Schema<TEntity extends Entity> {
   }
 
   private validateFieldDef(field: string, fieldDef: FieldDefinition) {
-    if (!['object', 'boolean', 'date', 'number', 'point', 'string', 'string[]', 'text'].includes(fieldDef.type))
+    if (!['object', 'boolean', 'date', 'number', 'point', 'string', 'string[]', 'number[]', 'text'].includes(fieldDef.type))
       throw Error(`The field '${field}' is configured with a type of '${fieldDef.type}'. Valid types include 'boolean', 'date', 'number', 'point', 'string', 'string[]', and 'text'.`);
   }
 }

@@ -32,8 +32,21 @@ class EntityStringArrayField extends EntityField {
     return (this.fieldDef as StringArrayFieldDefinition).separator ?? '|';
   }
 
+  protected isStringable(itemValue: any) {
+    return this.isString(itemValue) || this.isNumber(itemValue) || this.isBoolean(itemValue);
+  }
+
   private isArray(value: any) {
-    return Array.isArray(value);
+    if (!Array.isArray(value)) {
+      return false;
+    }
+
+    for (let item of value) {
+      if (!this.isStringable(item)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

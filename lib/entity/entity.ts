@@ -17,6 +17,7 @@ import { RedisJsonData, RedisHashData } from "../client";
 import EntityObjectField from "./fields/entity-object-field";
 import { Metadata } from "../ext/metadata";
 import EntityConstructor from "./entity-constructor";
+import EntityNumberArrayField from "./fields/entity-number-array-field";
 
 const ENTITY_FIELD_CONSTRUCTORS: Record<SchemaFieldType, EntityFieldConstructor> = {
   'object': EntityObjectField,
@@ -26,7 +27,8 @@ const ENTITY_FIELD_CONSTRUCTORS: Record<SchemaFieldType, EntityFieldConstructor>
   'text': EntityTextField,
   'date': EntityDateField,
   'point': EntityPointField,
-  'string[]': EntityStringArrayField
+  'string[]': EntityStringArrayField,
+  'number[]': EntityNumberArrayField,
 }
 
 /**
@@ -39,7 +41,7 @@ const ENTITY_FIELD_CONSTRUCTORS: Record<SchemaFieldType, EntityFieldConstructor>
  */
 export default abstract class Entity {
   /** The generated entity ID. */
-  readonly entityId: string;
+  readonly entityId: string | number;
 
   private schemaDef: SchemaDefinition;
   private prefix: string;
@@ -49,7 +51,7 @@ export default abstract class Entity {
    * Creates an new Entity.
    * @internal
    */
-  constructor(schema: Schema<any>, id: string, data: EntityData = {}) {
+  constructor(schema: Schema<any>, id: string | number, data: EntityData = {}) {
     this.schemaDef = schema.definition;
     this.prefix = schema.prefix;
     this.entityId = id;

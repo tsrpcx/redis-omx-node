@@ -12,16 +12,18 @@ async function test() {
     await User.repository.createIndex();
 
     let user = await User.create({
-        id: 100012,
-        name: 'zhangsan',
-        age: 100,
-        created: new Date(),
-        dbs: ["redis", "json", "redisjson"],
-        group: {
-            name: 'g11',
-            score: 100,
-        }
-    })
+        // id: 100012,
+        // name: 'zhangsan',
+        // age: 100,
+        // isNew: true,
+        // created: new Date(),
+        // dbs: ["redis", "json", "redisjson"],
+        skins: [100, 100, 300],
+        // group: {
+        //     name: 'g11',
+        //     score: 100,
+        // }
+    }, )
 
     // user.group = {
     //     groupName: 'xiaoxueGroup',
@@ -30,13 +32,10 @@ async function test() {
 
     await User.repository.save(user);
 
-    let a =true;
+    let a = true;
     console.log('user=', a ?? 100, user.toJSON());
 
-
-    return;
-
-    let dbUsers = await User.repository.search().where('group\\.name').eq('g11').returnAll();
+    // let dbUsers = await User.repository.search().where('group\\.name').eq('g11').returnAll();
     // let dbUsers = await User.repository.search().where('group.groupName').eq('xiaoxueGroup').returnAll();
     // finds all the Mushroomhead albums with the word 'beautiful' in the title from 1990 and beyond
 
@@ -44,13 +43,18 @@ async function test() {
     // const query = "@group\\.name:{g11}"
     // let dbUsers = await User.repository.searchRaw(query).returnAll();
 
+    let dbUsers = await User.repository.fetch('1000');
 
-    dbUsers.forEach(async (item) => {
-        console.log('dbUser=', item.toJSON())
-        item.age = Math.random() * 1000000;
-        await User.repository.save(item);
-    })
-    console.log('dbUser=', dbUsers);
+    // dbUsers.forEach(async (item) => {
+    //     console.log('dbUser=', item.toJSON())
+    //     item.age = Math.random() * 1000000;
+    //     await User.repository.save(item);
+    // })
+    console.log('dbUser=', dbUsers.toJSON());
+
+
+    return;
+
 }
 
 test();

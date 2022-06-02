@@ -19,34 +19,47 @@ export class GroupItem implements EGroupItem {
 }
 
 export interface EUser {
-    id: number;
-    name: string;
-    age: number;
-    created: Date;
-    dbs: string[];
-    group: GroupItem;
+    // id: number;
+    // name: string;
+    // age: number;
+    // created: Date;
+    // dbs: string[];
+    // group: GroupItem;
+    // isNew: boolean;
+    skins: number[];
 }
 
 @OrmClass('User')
 export class User extends Entity implements EUser {
-    /** 用户uid */
-    @Primary()
-    @Property({ type: 'number', indexed: true })
     id: number;
-    @Property({ type: 'text', indexed: true })
     name: string;
-
-    @Property({ type: 'number', defaultValue: 100 })
     age: number;
-
-    @Property({ type: 'date' })
     created: Date;
-
-    @Property({ type: 'string[]' })
     dbs: string[];
-
-    @Property({ type: 'object' })
     group: GroupItem;
+    isNew: boolean;
+    // @Property({ type: 'boolean', indexed: true })
+    // isNew: boolean;
+    // /** 用户uid */
+    // @Property({ type: 'number', indexed: true })
+    // id: number;
+    // @Property({ type: 'text', indexed: true })
+    // name: string;
+
+    // @Property({ type: 'number', defaultValue: 100 })
+    // age: number;
+
+    // @Property({ type: 'date' })
+    // created: Date;
+
+    // @Property({ type: 'string[]' })
+    // dbs: string[];
+
+    // @Property({ type: 'object' })
+    // group: GroupItem;
+
+    @Property({ type: 'number[]', indexed: true })
+    skins: number[]
 
     private static _repository: Repository<User>;
 
@@ -59,8 +72,8 @@ export class User extends Entity implements EUser {
 
     /** 创建新用户 */
     static async create(data: EUser) {
-        data.created = data.created || new Date();
-        let user = await User.repository.createEntity(data as any);
+        // data.created = data.created || new Date();
+        let user = await User.repository.createEntity(data as any, 1000);
         await User.repository.save(user);
         return user;
     }
