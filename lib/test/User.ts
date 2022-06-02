@@ -2,19 +2,19 @@ import Entity from "../entity/entity";
 import Repository from "../repository/repository";
 import Schema from "../schema/schema";
 import Client from "../client";
-import { MetadataEntity, MetadataPrimary, MetadataProperty } from "../ext/decorators";
+import { EntityOmx, Primary, Property } from "../ext/decorators";
 
 export interface EGroupItem {
     name: string;
     score: number;
 }
 
-@MetadataEntity('GroupItem', { isItem: true })
+@EntityOmx('GroupItem', { isItem: true })
 export class GroupItem implements EGroupItem {
-    @MetadataProperty({ type: 'string', indexed: true })
+    @Property({ type: 'string', indexed: true })
     name: string;
 
-    @MetadataProperty({ type: 'number', indexed: true })
+    @Property({ type: 'number', indexed: true })
     score: number;
 }
 
@@ -27,25 +27,25 @@ export interface EUser {
     group: GroupItem;
 }
 
-@MetadataEntity('User')
+@EntityOmx('User')
 export class User extends Entity implements EUser {
     /** 用户uid */
-    @MetadataPrimary()
-    @MetadataProperty({ type: 'number', indexed: true })
+    @Primary()
+    @Property({ type: 'number', indexed: true })
     id: number;
-    @MetadataProperty({ type: 'text', indexed: true })
+    @Property({ type: 'text', indexed: true })
     name: string;
 
-    @MetadataProperty({ type: 'number', defaultValue: 100 })
+    @Property({ type: 'number', defaultValue: 100 })
     age: number;
 
-    @MetadataProperty({ type: 'date' })
+    @Property({ type: 'date' })
     created: Date;
 
-    @MetadataProperty({ type: 'string[]' })
+    @Property({ type: 'string[]' })
     dbs: string[];
 
-    @MetadataProperty({ type: 'object' })
+    @Property({ type: 'object' })
     group: GroupItem;
 
     private static _repository: Repository<User>;
@@ -60,7 +60,7 @@ export class User extends Entity implements EUser {
     /** 创建新用户 */
     static async create(data: EUser) {
         data.created = data.created || new Date();
-        let user = User.repository.createEntity(data as any);
+        let user = await User.repository.createEntity(data as any);
         await User.repository.save(user);
         return user;
     }

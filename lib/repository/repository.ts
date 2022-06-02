@@ -105,8 +105,8 @@ export default abstract class Repository<TEntity extends Entity> {
    * @param data Optional values with which to initialize the entity.
    * @returns A newly created Entity.
    */
-  createEntity(data: EntityData = {}): TEntity {
-    const id = this.schema.generateId();
+  async createEntity(data: EntityData = {}): Promise<TEntity> {
+    const id = await this.schema.generateId();
     return new this.schema.entityCtor(this.schema, id, data);
   }
 
@@ -128,7 +128,7 @@ export default abstract class Repository<TEntity extends Entity> {
    * @returns The newly created and saved Entity.
    */
   async createAndSave(data: EntityData = {}): Promise<TEntity> {
-    const entity = this.createEntity(data);
+    const entity = await this.createEntity(data);
     await this.save(entity)
     return entity
   }

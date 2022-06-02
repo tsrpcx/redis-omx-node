@@ -125,13 +125,12 @@ export default class Schema<TEntity extends Entity> {
    * Generates a unique string using the configured {@link IdStrategy}.
    * @returns
    */
-  generateId(): string {
-    const ulidStrategy: IdStrategy = () => ulid();
-    return (this.options?.idStrategy ?? ulidStrategy)();
+  async generateId(): Promise<string> {
+    const ulidStrategy: IdStrategy = async () => ulid();
+    return (await (this.options?.idStrategy ?? ulidStrategy)()).toString();
   }
 
   private defineProperties(actor: EntityConstructor<TEntity>, definition: SchemaDefinition) {
-    let meta = Metadata.getEntityMetadataFromType(actor);
     Object.keys(definition).forEach(fieldName => {
 
       const fieldDef: FieldDefinition = definition[fieldName];

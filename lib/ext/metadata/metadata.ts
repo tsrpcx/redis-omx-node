@@ -23,10 +23,6 @@ export class Metadata {
             throw new Error(entityName + ' is not an entity!');
         }
 
-        if (!isItems[entityName] && primary[entityName] === undefined) {
-            throw new Error(entityName + ' doesn\'t have a primary key defined!');
-        }
-
         return {
             name: names[entityName],
             primary: primary[entityName],
