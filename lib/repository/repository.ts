@@ -133,6 +133,11 @@ export default abstract class Repository<TEntity extends Entity> {
     return entity
   }
 
+  /** 增量提交实体变化数据 */
+  async commit(entity: TEntity): Promise<void> {
+
+  }
+
   /**
    * Read and return an {@link Entity} from Redis with the given id. If
    * the {@link Entity} is not found, returns an {@link Entity} with all
@@ -140,8 +145,8 @@ export default abstract class Repository<TEntity extends Entity> {
    * @param id The ID of the {@link Entity} you seek.
    * @returns The matching Entity.
    */
-  async fetch(id: string): Promise<TEntity> {
-    return await this.readEntity(id);
+  async fetch(id: number | string): Promise<TEntity> {
+    return await this.readEntity(id.toString());
   }
 
   /**
@@ -149,8 +154,8 @@ export default abstract class Repository<TEntity extends Entity> {
    * not found, does nothing.
    * @param id The ID of the {@link Entity} you with to delete.
    */
-  async remove(id: string): Promise<void> {
-    const key = this.makeKey(id);
+  async remove(id: number | string): Promise<void> {
+    const key = this.makeKey(id.toString());
     await this.client.unlink(key);
   }
 
@@ -160,8 +165,8 @@ export default abstract class Repository<TEntity extends Entity> {
    * @param id The ID of the {@link Entity} to set and expiration for.
    * @param ttlInSeconds THe time to live in seconds.
    */
-  async expire(id: string, ttlInSeconds: number) {
-    const key = this.makeKey(id);
+  async expire(id: number | string, ttlInSeconds: number) {
+    const key = this.makeKey(id.toString());
     await this.client.expire(key, ttlInSeconds);
   }
 

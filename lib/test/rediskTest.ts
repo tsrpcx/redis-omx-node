@@ -6,8 +6,14 @@ async function test() {
     let cli = redis.createClient();
     await cli.connect();
 
-    global.clientOM = new Client();
+    let cc = global.clientOM = new Client();
     await global.clientOM.use(cli);
+
+    cli.json.get('', {})
+
+    cc.search()
+
+    cc.jsonget
 
     await User.repository.createIndex();
 
@@ -23,7 +29,7 @@ async function test() {
         //     name: 'g11',
         //     score: 100,
         // }
-    }, )
+    })
 
     // user.group = {
     //     groupName: 'xiaoxueGroup',
