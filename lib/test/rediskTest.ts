@@ -9,21 +9,22 @@ async function test() {
     let cc = global.clientOM = new Client();
     await global.clientOM.use(cli);
 
-    cli.json.get('', {})
+    // cli.json.get('', {})
 
-    cc.search()
+    // cc.search()
 
-    cc.jsonget
+    // cc.jsonget
 
     await User.repository.createIndex();
 
     let user = await User.create({
         // id: 100012,
         // name: 'zhangsan',
-        // age: 100,
+        age: 100,
         // isNew: true,
         // created: new Date(),
         // dbs: ["redis", "json", "redisjson"],
+
         skins: [100, 100, 300],
         // group: {
         //     name: 'g11',
@@ -38,8 +39,10 @@ async function test() {
 
     await User.repository.save(user);
 
-    let a = true;
-    console.log('user=', a ?? 100, user.toJSON());
+    let dbUsers = await User.repository.search().where('age').eq(100).returnAll();
+    console.log('dbUser=', dbUsers[0].toJSON());
+    // let a = true;
+    // console.log('user=', a ?? 100, user.toJSON());
 
     // let dbUsers = await User.repository.search().where('group\\.name').eq('g11').returnAll();
     // let dbUsers = await User.repository.search().where('group.groupName').eq('xiaoxueGroup').returnAll();
@@ -49,14 +52,14 @@ async function test() {
     // const query = "@group\\.name:{g11}"
     // let dbUsers = await User.repository.searchRaw(query).returnAll();
 
-    let dbUsers = await User.repository.fetch('1000');
+    // let dbUsers = await User.repository.fetch('1000');
 
     // dbUsers.forEach(async (item) => {
     //     console.log('dbUser=', item.toJSON())
     //     item.age = Math.random() * 1000000;
     //     await User.repository.save(item);
     // })
-    console.log('dbUser=', dbUsers.toJSON());
+
 
 
     return;
